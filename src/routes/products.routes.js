@@ -1,16 +1,14 @@
 const { Router } = require("express");
+const ProductsController = require("../controllers/ProductsController");
+const ensureAuthenticated = require('../middlewares/ensureAuthenticated');
 
-const usersRouter = require("./users.routes");
-const sessionsRouter = require("./sessions.routes");
-const salesRouter = require("./sales.routes");
-const productsRouter = require("./products.routes");
+const productsRoutes = Router();
 
-const routes = Router();
+const productsController = new ProductsController();
 
-routes.use("/users", usersRouter);
-routes.use("/sessions", sessionsRouter);
+productsRoutes.use(ensureAuthenticated);
 
-routes.use("/sales", salesRouter);
-routes.use("/products", productsRouter);
+productsRoutes.get("/", productsController.index);
+productsRoutes.post("/", productsController.create);
 
-module.exports = routes;
+module.exports = productsRoutes;
